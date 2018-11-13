@@ -26,7 +26,7 @@ pipeline {
                 always {
                     sh 'docker-compose down'
                     sh 'docker-compose -f ./docker-compose-test-runner.yml down'
-                    //sh 'chmod -R o+xw allure-results'
+                    sh 'sudo chmod -R o+xw allure-results'
                 }
             }
         }
