@@ -43,10 +43,10 @@ pipeline {
                           [$class: 'JUnitType', pattern: 'junit-results/report.xml']
                   ]
             ])
-            //script{    
-            //    def slackMsg = """Build ${currentBuild.result}: <${env.BUILD_URL}|${env.JOB_NAME} #${env.BUILD_NUMBER}> \n ${testStatuses()}. <${env.BUILD_URL}allure/|Report>"""
-            //    slackSend channel: '#my-ci', color: notificationColor, message: slackMsg
-            //}     
+            script{    
+                def slackMsg = """Build ${currentBuild.result}: <${env.BUILD_URL}|${env.JOB_NAME} #${env.BUILD_NUMBER}> \n ${testStatuses()}. <${env.BUILD_URL}allure/|Report>"""
+			    slackSend botUser: true, channel: '#general', color: notificationColor, message: slackMsg, teamDomain: 'https://myfirstslack-co.slack.com', tokenCredentialId: 'slack-jenkins-secret'
+            }     
         }
     }
 }
