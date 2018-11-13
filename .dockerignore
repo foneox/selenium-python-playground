@@ -1,0 +1,11 @@
+Jenkinsfile
+allure-results/
+allure-report/
+junit-results/
+__pycache__/
+**/__pycache__/
+**/*.pyc
+.pytest_cache/
+geckodriver.log
+.vscode/
+docker-compose.yml

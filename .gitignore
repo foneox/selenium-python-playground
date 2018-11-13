@@ -1,0 +1,10 @@
+.pytest_cache/
+geckodriver.log
+report.xml
+allure-results/
+__pycache__/
+allure-report/
+allure-result/
+.idea/
+.vscode/
+venv/
