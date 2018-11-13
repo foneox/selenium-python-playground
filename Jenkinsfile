@@ -13,8 +13,6 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-				//sh 'git config --system core.longpaths true'
-                sh 'sudo git clean -fd'
 				sh 'docker-compose build'
             }
         }
