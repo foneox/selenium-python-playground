@@ -9,4 +9,4 @@ from hamcrest import *
 def test_uz_availability(driver):
     
     with pytest.allure.step('Get UZ'):
-        driver.get("https://stable.eps.testing.sbtech.com/test/Session")
+        driver.get("https://booking.uz.gov.ua/")
