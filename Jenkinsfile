@@ -46,27 +46,9 @@ pipeline {
                   ]
             ])
             script{    
-                def slackMsg = """Build ${currentBuild.result}: <${env.BUILD_URL}|${env.JOB_NAME} #${env.BUILD_NUMBER}> \n ${testStatuses()}. <${env.BUILD_URL}allure/|Report>"""
+                def slackMsg = """Build ${currentBuild.result}: <${env.BUILD_URL}|${env.JOB_NAME} #${env.BUILD_NUMBER}> \n <${env.BUILD_URL}allure/|Report>"""
 			    slackSend botUser: true, channel: '#general', color: notificationColor, message: slackMsg, teamDomain: 'https://myfirstslack-co.slack.com', tokenCredentialId: 'slack-jenkins-secret'
             }     
         }
     }
-}
-
-@NonCPS
-def testStatuses() {
-    def testStatus = ""
-    AbstractTestResultAction testResultAction = currentBuild.rawBuild.getAction(AbstractTestResultAction.class)
-    if (testResultAction != null) {
-        def total = testResultAction.totalCount
-        def failed = testResultAction.failCount
-        def skipped = testResultAction.skipCount
-        def passed = total - failed - skipped
-        testStatus = "Test Status: Passed: ${passed}, Failed: ${failed} ${testResultAction.failureDiffString}, Skipped: ${skipped}"
-
-        if (failed == 0) {
-            currentBuild.result = 'SUCCESS'
-        }
-    }
-    return testStatus
 }
