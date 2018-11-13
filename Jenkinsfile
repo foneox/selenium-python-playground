@@ -26,7 +26,7 @@ pipeline {
                 always {
                     sh 'docker-compose down'
                     sh 'docker-compose -f ./docker-compose-test-runner.yml down'
-                    sh 'sudo chmod -R o+xw allure-results'
+                    sh 'chmod -R o+xw allure-results'
                 }
             }
         }
@@ -39,15 +39,11 @@ pipeline {
     }
     post {
         always {    
-            step([$class    : 'XUnitBuilder',
-                  thresholds: [[$class: 'FailedThreshold', failureThreshold: '1']],
-                  tools     : [
-                          [$class: 'JUnitType', pattern: 'junit-results/report.xml']
-                  ]
-            ])
+            junit 'junit-results/report.xml'
             script{    
                 def slackMsg = """Build ${currentBuild.result}: <${env.BUILD_URL}|${env.JOB_NAME} #${env.BUILD_NUMBER}> \n <${env.BUILD_URL}allure/|Report>"""
-			    slackSend botUser: true, channel: '#general', color: notificationColor, message: slackMsg, teamDomain: 'https://myfirstslack-co.slack.com', tokenCredentialId: 'slack-jenkins-secret'
+			    def notificationColor = currentBuild.result =='SUCCESS' ? "#00e600" : "#ff0000"
+                slackSend botUser: true, channel: '#general', color: notificationColor, message: slackMsg, teamDomain: 'https://myfirstslack-co.slack.com', tokenCredentialId: 'slack-jenkins-secret'
             }     
         }
     }
