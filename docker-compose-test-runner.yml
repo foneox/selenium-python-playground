@@ -1,0 +1,15 @@
+version: "3"
+services:
+    tests:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        image: "best-image-tests"
+        volumes:
+            - ./allure-results:/opt/app/allure-results
+            - ./junit-results:/opt/app/junit-results
+        networks:
+            - test-network
+
+networks:
+  test-network:

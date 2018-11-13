@@ -1,12 +1,9 @@
 version: "3"
 services:
-    tests:
-        build:
-            context: .
-            dockerfile: Dockerfile
-        image: "best-image-tests"
-        volumes:
-            - ./allure-results:/opt/app/allure-results
-            - ./junit-results:/opt/app/junit-results
     selenium:
-        image: selenium/standalone-firefox
+        image: selenium/standalone-firefox:3.141.5
+        networks:
+            - test-network
+
+networks:
+  test-network:

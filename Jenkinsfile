@@ -14,16 +14,18 @@ pipeline {
         stage('Build') {
             steps {
 			    sh 'whoami'
-				sh 'docker-compose build'
+				sh 'docker-compose -f ./docker-compose-test-runner.yml build'
             }
         }
         stage('Test') {
             steps {
-                sh 'docker-compose up'
+                sh 'docker-compose up -d' //start widget hosting
+                sh 'docker-compose -f ./docker-compose-test-runner.yml up'
             }
             post {
                 always {
                     sh 'docker-compose down'
+                    sh 'docker-compose -f ./docker-compose-test-runner.yml down'
                     sh 'sudo chmod -R o+xw allure-results'
                 }
             }
