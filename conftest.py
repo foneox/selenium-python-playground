@@ -3,6 +3,7 @@ from selenium import webdriver
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.firefox.firefox_profile import FirefoxProfile
+from commons import slack
 
 import allure
 from allure.constants import AttachmentType
@@ -34,5 +35,14 @@ def driver(request):
         raise Exception("is_remote_driver can be only true or false")
     
     yield browser_driver
-    allure.attach('screenshot', browser_driver.get_screenshot_as_png(), type=AttachmentType.PNG)
-    browser_driver.quit()
+    screenshot = browser_driver.get_screenshot_as_png()
+    allure.attach('screenshot', screenshot, type=AttachmentType.PNG)
+    try:
+        browser_driver.quit()
+    except:
+        pass
+    
+    #try:
+    #    slack.sendPng(screenshot)
+    #except:
+    #    pass

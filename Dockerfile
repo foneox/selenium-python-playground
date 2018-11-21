@@ -9,4 +9,4 @@ COPY . .
 VOLUME "/opt/app/allure-results"
 VOLUME "/opt/app/junit-results"
 
-CMD rm -rf ./allure-results/* && python -u -m pytest -n 4 tests/ --junitxml=junit-results/report.xml --alluredir=allure-results --verbose --is_remote_driver=true
+CMD rm -rf ./allure-results/* && python -u -m pytest -n 1 tests/ --junitxml=junit-results/report.xml --alluredir=allure-results --verbose --is_remote_driver=true
