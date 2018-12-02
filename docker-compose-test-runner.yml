@@ -11,7 +11,7 @@ services:
         networks:
             - test-network
         environment:
-            - SLACK_API_TOKEN: ${SLACK_API_TOKEN}
+            - SLACK_API_TOKEN: "${SLACK_API_TOKEN}"
 
 networks:
   test-network:
