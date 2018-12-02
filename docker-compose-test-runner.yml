@@ -10,6 +10,8 @@ services:
             - ./junit-results:/opt/app/junit-results
         networks:
             - test-network
+        environment:
+            - SLACK_API_TOKEN: ${SLACK_API_TOKEN}
 
 networks:
   test-network:
