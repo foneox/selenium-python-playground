@@ -3,7 +3,6 @@ from selenium import webdriver
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.firefox.firefox_profile import FirefoxProfile
-from commons import slack
 
 import allure
 from allure.constants import AttachmentType
@@ -15,7 +14,7 @@ WEBDRIVER_ENDPOINT = 'http://selenium:4444/wd/hub'
 
 
 
-@pytest.yield_fixture()
+@pytest.fixture()
 def driver(request):
     is_remote_driver = request.config.getoption("--is_remote_driver")
     if (is_remote_driver == "true"):
@@ -41,8 +40,3 @@ def driver(request):
         browser_driver.quit()
     except:
         pass
-    
-    #try:
-    #    slack.sendPng(screenshot)
-    #except:
-    #    pass

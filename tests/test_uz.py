@@ -7,41 +7,24 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from hamcrest import *
 import time
+from commons import slack
 
 import os
 from slackclient import SlackClient
+from commons import screenshooter
 
+stationCodes = {'Київ': '2200001', 'Івано-Франківськ': '2218200', 'Воловець': '2218145'}
 
-def test_uz_availability(driver):
+@pytest.mark.parametrize("src,dest,date", [
+    ("Київ", "Івано-Франківськ","2018-12-21"),
+    ("Івано-Франківськ", "Київ","2018-12-25"),
+    ("Київ", "Воловець","2018-12-28"),
+    ("Воловець", "Київ","2019-01-02"),
+])
+def test_uz_availability(driver, src, dest, date):
     
     with pytest.allure.step('Get UZ'):
-        driver.get("https://booking.uz.gov.ua/")
-        driver.find_element_by_name("from-title").clear()
-        driver.find_element_by_name("from-title").send_keys("Київ")
-        WebDriverWait(driver, 10).until(
-            EC.element_to_be_clickable((By.XPATH, "//*[@id='ui-id-1']/li[1]")))
-        driver.find_element_by_xpath("//*[@id='ui-id-1']/li[1]").click()
-
-        driver.find_element_by_name("to-title").clear()
-        driver.find_element_by_name("to-title").send_keys("Івано-Франківськ")
-        WebDriverWait(driver, 10).until(
-            EC.element_to_be_clickable((By.XPATH, "//*[@id='ui-id-2']/li[1]")))
-        driver.find_element_by_xpath("//*[@id='ui-id-2']/li[1]").click()
-        
-        
-        #driver.find_element_by_name("date-hover").send_keys("11.22.2018")
-        driver.find_element_by_name("date").set_attribute("value", "2018-11-22")
-        #driver.find_element_by_name("date-hover").click()
-
-        #driver.find_element_by_name("date-hover").send_keys("11.22.2018")
-        
-        
-        time.sleep(1)
-
-        #WebDriverWait(driver, 10).until(
-        #    EC.element_to_be_clickable((By.XPATH, "//*[@id='search-frm']/form/div[3]/div/button")))
-        driver.find_element_by_xpath("//*[@id='search-frm']/form/div[3]/div/button").click()
-        
-        time.sleep(10)
-        
-        
+        driver.get(f"https://booking.uz.gov.ua/?from={stationCodes[src]}&to={stationCodes[dest]}&date={date}&time=00%3A00&url=train-list")
+        time.sleep(3)
+        screenshot = screenshooter.fullpage_as_png(driver)
+        slack.retrying_send_png(screenshot, f"date:{date} from:{src} to: {dest}")

@@ -8,6 +8,7 @@ pipeline {
     }
     environment {
         PYTHONIOENCODING = 'UTF-8'
+        SLACK_API_TOKEN = credentials('slack-jenkins-secret')
     }
 
     stages {
